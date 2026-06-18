@@ -54,6 +54,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Download a distinct artist-reference starter dataset from Wikimedia Commons.")
     parser.add_argument("--per-query", type=int, default=20)
     parser.add_argument("--per-label", type=int, default=10)
+    parser.add_argument("--max-per-query", type=int, default=2)
     args = parser.parse_args()
 
     IMAGE_ROOT.mkdir(parents=True, exist_ok=True)
@@ -68,9 +69,12 @@ def main() -> None:
         for query in queries:
             if downloaded >= args.per_label:
                 break
+            downloaded_for_query = 0
 
             for page in commons_search(query, limit=args.per_query):
                 if downloaded >= args.per_label:
+                    break
+                if downloaded_for_query >= args.max_per_query:
                     break
 
                 imageinfo = (page.get("imageinfo") or [{}])[0]
@@ -105,6 +109,7 @@ def main() -> None:
                 )
                 seen_urls.add(source_url)
                 downloaded += 1
+                downloaded_for_query += 1
 
     MANIFEST_JSONL.write_text(
         "\n".join(json.dumps(record, ensure_ascii=False) for record in manifest_records) + "\n",

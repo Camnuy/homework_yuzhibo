@@ -8,5 +8,7 @@ data/
 artifacts/
 demo_test_images/
 *.log
+reports/
+test*.jpg
 Thumbs.db
 .DS_Store
