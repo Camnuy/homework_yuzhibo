@@ -4,6 +4,17 @@ This project is an EMI 2026 final-project prototype built as a **retrieval and m
 
 This GitHub version is a **code-and-documentation release**. Large local assets such as datasets, generated artifacts, runtime models, and packaged executables are intentionally not uploaded here.
 
+## Important Notice For Clients
+
+This repository is **not** a directly runnable website package.
+
+- The `publication/` folder contains written project materials only.
+- It is **not** an image folder and **not** a web page folder.
+- The demo UI is a local Gradio application started from Python code.
+- If you only open files on GitHub, no demo website will appear.
+
+If you need a customer-facing runnable version, use a packaged local delivery build rather than this GitHub code repository.
+
 Unlike a classification project, this version is centered on a different question:
 
 > How can a machine-learning system help creators find visually related artworks and build reference boards for a creative brief?
