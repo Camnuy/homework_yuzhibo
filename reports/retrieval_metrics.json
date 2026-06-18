@@ -1,6 +1,0 @@
-{
-  "num_queries": 32,
-  "top1_label_agreement": 0.8125,
-  "top3_label_agreement": 0.9375,
-  "note": "These metrics use broad folder labels only as a proxy for relatedness."
-}

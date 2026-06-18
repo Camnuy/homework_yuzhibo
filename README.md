@@ -1,73 +1,57 @@
 # Artist Style Retrieval and Reference Board Tool
 
-This project is an EMI 2026 final-project prototype built as a **retrieval and moodboard system** for artists and designers.
+## Project Idea
 
-This GitHub version is a **code-and-documentation release**. Large local assets such as datasets, generated artifacts, runtime models, and packaged executables are intentionally not uploaded here.
+This project explores how machine learning can support creative practice through **reference retrieval** rather than classification.
 
-## Important Notice For Clients
+The central question is:
 
-This repository is **not** a directly runnable website package.
+> How can a small machine-learning system help a user search for visually related artworks and build a reference board from an image or a short text brief?
 
-- The `publication/` folder contains written project materials only.
-- It is **not** an image folder and **not** a web page folder.
-- The demo UI is a local Gradio application started from Python code.
-- If you only open files on GitHub, no demo website will appear.
+The system uses CLIP embeddings to map both images and text into the same feature space. A query is then compared against a local artist reference library and the most similar examples are returned.
 
-If you need a customer-facing runnable version, use a packaged local delivery build rather than this GitHub code repository.
+## Current Scope
 
-Unlike a classification project, this version is centered on a different question:
-
-> How can a machine-learning system help creators find visually related artworks and build reference boards for a creative brief?
-
-The tool uses CLIP embeddings to index a small artist-reference library. A user can search with:
-
-1. an uploaded image
-2. a text brief such as "monumental, calm, architectural"
-
-The system then returns the most visually relevant references from the collection.
-
-## Current Starter Artist Library
-
-The initial version uses a fully separate public-domain artist dataset built around four named artists:
+The current prototype focuses on four artist groups:
 
 1. `monet`
 2. `vangogh`
 3. `hokusai`
 4. `klimt`
 
-This is intentional. The other project folder uses a different topic and a different dataset structure, so the two assignments do not share the same image corpus.
+This keeps the dataset compact enough for a clear demo while still showing cross-style retrieval behaviour.
 
-## Project Direction
+## What The System Does
 
-This is the **retrieval / recommendation** project in the two-project split:
+The tool supports two query modes:
 
-- `homework_nan` = retrieval, ranking, reference board building
-- `homework女` = classification, subjective style judgement, critical error analysis
+1. upload an image and retrieve similar references
+2. enter a short creative brief and retrieve similar references
 
-## What Is In The Repo
+The demo then shows:
+
+1. a summary of the query mode
+2. the top reference direction
+3. a ranked result table
+4. a gallery of matched reference images
+
+## Repository Contents
 
 ```text
-docs/                                 project notes and assignment-facing documentation
-publication/                          client-facing overview and release notes
-src/prepare_reference_catalog.py
-src/build_reference_index.py
-src/evaluate_reference_retrieval.py
-src/demo_app.py
-src/reference_board_tool/             shared retrieval code
-scripts/                              packaging and setup helpers
-reports/                              evaluation summary files
-weblog.md                             project weblog draft
+README.md
+weblog.md
+requirements.txt
+run_demo.ps1
+src/
+  demo_app.py
+  download_artist_reference_dataset.py
+  prepare_reference_catalog.py
+  build_reference_index.py
+  evaluate_reference_retrieval.py
+  reference_board_tool/
 ```
 
-## Current Initial Version
-
-The current initial version already includes:
-
-1. a distinct artist-reference library
-2. CLIP-based image and text retrieval
-3. index-building and evaluation code
-4. a Gradio demo for searching by image or text
-5. a starter retrieval evaluation script
+Large local assets such as downloaded images, generated index bundles, and runtime model files are not intended as core submission materials in this repository.
 
 ## How To Run
 
@@ -77,19 +61,25 @@ Install dependencies:
 python -m pip install -r requirements.txt
 ```
 
-Prepare a clean catalog:
+Download the starter reference images:
+
+```powershell
+python src/download_artist_reference_dataset.py --per-query 20 --per-label 8
+```
+
+Build the catalog:
 
 ```powershell
 python src/prepare_reference_catalog.py
 ```
 
-Build the CLIP retrieval index:
+Build the retrieval index:
 
 ```powershell
 python src/build_reference_index.py
 ```
 
-Run the starter evaluation:
+Evaluate the retrieval system:
 
 ```powershell
 python src/evaluate_reference_retrieval.py
@@ -98,20 +88,33 @@ python src/evaluate_reference_retrieval.py
 Launch the demo:
 
 ```powershell
+.\run_demo.ps1
+```
+
+You can also run:
+
+```powershell
 python src/demo_app.py
 ```
 
-For this GitHub release, you should prepare your own local dataset and build the retrieval index locally before running the demo.
+and then open the local URL after the service starts.
 
-## Why This Fits EMI
+## Why This Fits The Course
 
-This project aligns with the brief because it includes:
+This project aligns with the course brief because it includes:
 
-1. machine-learning code rather than only off-the-shelf AI tools
-2. a direct connection to creative practice
-3. a clear process from dataset preparation to interface demo
-4. room for critical reflection about taste, similarity, and recommendation systems
+1. a machine-learning pipeline rather than only prompt use
+2. dataset preparation and catalog design
+3. embedding-based retrieval logic
+4. a working interactive demo
+5. room for critical reflection on similarity, taste, and recommendation systems
 
-## Notes
+## Limitations
 
-This repo is intentionally framed as a **reference-finding tool**, not a style classifier. It also uses a fully separate dataset from the second project folder.
+This is a local reference-library retrieval tool, not an internet image search engine.
+
+Results are limited by:
+
+1. the size of the curated artist library
+2. the quality and diversity of the downloaded images
+3. the fact that style similarity is partly subjective rather than absolute
